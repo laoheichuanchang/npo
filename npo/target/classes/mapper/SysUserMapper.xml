@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysUser">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+    <result column="REG_TIME" jdbcType="DATE" property="regTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="INTEGER" property="updatorId" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+    <result column="IS_DELETE" jdbcType="INTEGER" property="isDelete" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  <resultMap id="UserRoleResultMap" type="com.wy.npo.entity.SysUser">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+    <result column="REG_TIME" jdbcType="DATE" property="regTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATOR_ID" jdbcType="INTEGER" property="updatorId" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+    <result column="IS_DELETE" jdbcType="INTEGER" property="isDelete" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <collection property="sysRoles"  ofType="com.wy.npo.entity.SysRole"> 
+            <id column="roleId" jdbcType="INTEGER" property="id" />
+		    <result column="roleCode" jdbcType="VARCHAR" property="code" />
+		    <result column="roleName" jdbcType="VARCHAR" property="name" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CODE, ACCOUNT, NAME, MOBILE, TEL, TYPE, EMAIL, PASSWORD, STATUS, RMK, REG_TIME, UPDATE_TIME, 
+    UPDATOR_ID, CREATOR_ID, IS_DELETE, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_user
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_user
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysUser"  useGeneratedKeys="true" keyProperty="id">
+    insert into t_sys_user (ID, CODE, ACCOUNT, 
+      NAME, MOBILE, TEL, 
+      TYPE, EMAIL, PASSWORD, 
+      STATUS, RMK,REG_TIME, UPDATE_TIME, 
+      UPDATOR_ID, CREATOR_ID, IS_DELETE, 
+      CREATE_TIME)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{rmk,jdbcType=VARCHAR},#{regTime,jdbcType=DATE},  #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updatorId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysUser"  useGeneratedKeys="true" keyProperty="id">
+    insert into t_sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="tel != null">
+        TEL,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="rmk != null">
+        RMK,
+      </if>
+      <if test="regTime != null">
+        REG_TIME,
+      </if>      
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null">
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null">
+        #{regTime,jdbcType=DATE},
+      </if>        
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wy.npo.entity.SysUser">
+    update t_sys_user
+    <set>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null">
+        RMK = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="regTime != null">
+        REG_TIME = #{regTime,jdbcType=DATE},
+      </if> 
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        IS_DELETE = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wy.npo.entity.SysUser">
+    update t_sys_user
+    set CODE = #{code,jdbcType=VARCHAR},
+      ACCOUNT = #{account,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      TEL = #{tel,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      RMK = #{rmk,jdbcType=VARCHAR},
+      REG_TIME = #{regTime,jdbcType=DATE},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      IS_DELETE = #{isDelete,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByBean" resultMap="BaseResultMap">
+      select 
+	    <include refid="Base_Column_List" />
+	   from t_sys_user
+	   where 1=1
+	   <![CDATA[  AND (IS_DELETE <> 1 or IS_DELETE is null) ]]>
+	   <if test="code != null and code != ''" >
+	       AND CODE = #{code,jdbcType=VARCHAR}
+	   </if>
+	   <if test="account != null and account != ''" >
+	       AND ACCOUNT = #{account,jdbcType=VARCHAR}
+	   </if>
+	   <if test="name != null and name != ''" >
+	       AND NAME = #{name,jdbcType=VARCHAR}
+	   </if>
+	   <if test="mobile != null and mobile != ''" >
+	       AND MOBILE = #{mobile,jdbcType=VARCHAR}
+	   </if>
+	   <if test="tel != null and tel != ''" >
+	       AND TEL = #{tel,jdbcType=VARCHAR}
+	   </if>	   
+	   <if test="email != null and email != ''" >
+	       AND EMAIL = #{email,jdbcType=VARCHAR}
+	   </if>
+	   <!--  <if test="password != null and password != ''" >
+	       AND PASSWORD = #{password,jdbcType=VARCHAR}
+	   </if>-->
+  </select>
+  
+  <select id="datagridUser" resultType="com.wy.npo.entity.SysUser">
+            select 
+				u.id,
+			    u.name,
+			    u.password,
+			    u.email,
+			    u.REG_TIME regTime,
+			    u.`CODE`,
+			    u.TEL,
+			    u.MOBILE,
+				t.name sysname,
+			  	(select name from T_SYS_ORG psys where psys.id=t.pid) psysname 
+		    from t_sys_user u,
+		         t_sys_user_role_rel ur,
+		         t_sys_role r,
+		         t_sys_org_role_rel re,
+		         T_SYS_ORG t 
+		    where u.id = ur.user_id
+		    and ur.role_id = r.id
+		    and r.id = re.role_id
+		    and re.org_id = t.id 
+		    and t.id in (select id from T_SYS_ORG where FIND_IN_SET(id, getChildLst(#{csysid})))
+		    <![CDATA[  AND (u.IS_DELETE <> 1 or u.IS_DELETE is null) ]]>
+	    <if test="page.sort != null and page.sort != ''">
+            order by #{page.sort} #{page.order}
+        </if>
+        <if test="page.page > 0">
+            limit #{page.start},#{page.end}
+        </if>
+  </select>
+  
+  <select id="getDatagridTotal" resultType="long">
+            select 
+			count(1)
+			from t_sys_user u,
+		         t_sys_user_role_rel ur,
+		         t_sys_role r,
+		         t_sys_org_role_rel re,
+		         T_SYS_ORG t 
+		    where u.id = ur.user_id
+		    and ur.role_id = r.id
+		    and r.id = re.role_id
+		    and re.org_id = t.id 
+		    and t.id in (select id from T_SYS_ORG where FIND_IN_SET(id, getChildLst(#{csysid})))
+		    <![CDATA[  AND (u.IS_DELETE <> 1 or u.IS_DELETE is null) ]]>
+  </select>
+  
+  <select id="queryCountByBean" resultType="long">
+          select 
+				count(1)
+				from t_sys_user u,t_sys_user su 
+          where u.CREATOR_ID = su.ID
+            <![CDATA[  AND (u.IS_DELETE <> 1 or u.IS_DELETE is null) ]]>
+            <if test="code != null and code!=''" >
+	        	AND u.CODE = #{code,jdbcType=VARCHAR}
+	      	</if>
+	      	<if test="account != null and account != ''" >
+	       		AND u.ACCOUNT = #{account,jdbcType=VARCHAR}
+	      	</if>
+	      	<if test="name != null and name != ''" >
+		        <!-- AND NAME = #{name,jdbcType=VARCHAR} -->
+		        and u.NAME like CONCAT('%',#{name},'%')
+		    </if>
+		    <if test="mobile != null and mobile != ''" >
+		        AND u.MOBILE = #{mobile,jdbcType=VARCHAR}
+		    </if>
+		    <if test="tel != null and tel != ''" >
+		        AND u.TEL = #{tel,jdbcType=VARCHAR}
+		    </if>
+		    <if test="email != null and email != ''" >
+		        AND u.EMAIL = #{email,jdbcType=VARCHAR}
+		    </if>
+		    <if test="status != null" >
+		        AND u.status = #{status,jdbcType=INTEGER}
+		    </if>
+		    <if test="type != null and type != ''" >
+		        AND u.type = #{type,jdbcType=VARCHAR}
+		    </if>
+  </select>
+  
+  <select id="queryListByBean" resultType="com.wy.npo.entity.SysUser">
+     select 
+	  u.ID,
+      u.ACCOUNT,
+      u.CODE,
+      u.name,
+      u.MOBILE,
+      u.EMAIL,
+      u.TEL,
+      u.STATUS,
+      u.REG_TIME regTime,
+      su.NAME createName,
+      u.CREATE_TIME createTime
+ 			from t_sys_user u,t_sys_user su 
+      where u.CREATOR_ID = su.ID
+       <![CDATA[  AND (u.IS_DELETE <> 1 or u.IS_DELETE is null) ]]>
+        <if test="user.code != null and user.code != ''" >
+        	AND u.CODE = #{user.code,jdbcType=VARCHAR}
+      	</if>
+      	<if test="user.account != null and user.account !=''" >
+       		AND u.ACCOUNT = #{user.account,jdbcType=VARCHAR}
+      	</if>
+      	<if test="user.name != null and user.name !=''" >
+	        <!-- AND NAME = #{user.name,jdbcType=VARCHAR} -->
+	        and u.NAME like CONCAT('%',#{user.name},'%')
+	    </if>
+	    <if test="user.mobile != null and user.mobile != ''" >
+	        AND u.MOBILE = #{user.mobile,jdbcType=VARCHAR}
+	    </if>
+	    <if test="user.tel != null and user.tel != ''" >
+		    AND u.TEL = #{user.tel,jdbcType=VARCHAR}
+		</if>
+		<if test="user.email != null and user.email != ''" >
+		    AND u.EMAIL = #{user.email,jdbcType=VARCHAR}
+		</if>
+	    <if test="user.status != null" >
+	        AND u.status = #{user.status,jdbcType=INTEGER}
+	    </if>
+	    <if test="user.type != null and user.type != ''" >
+	        AND u.type = #{user.type,jdbcType=VARCHAR}
+	    </if>
+        <if test="page.sort != null and page.sort != ''">
+            order by u.${page.sort} ${page.order}
+        </if>
+        <if test="page.page > 0">
+            limit #{page.start},#{page.end}
+        </if>
+  </select>
+  
+  <select id="selectBeanByKey" resultMap="UserRoleResultMap" parameterType="java.lang.Integer">
+      	select 
+			 u.id,
+			 u.CODE,
+			 u.ACCOUNT,
+			 u.NAME,
+			 u.MOBILE,
+			 u.TEL,
+			 u.TYPE,
+			 u.EMAIL,
+			 u.RMK,
+			 u.REG_TIME,
+			 r.id roleId,
+			 r.CODE roleCode,
+			 r.NAME roleName
+			 from t_sys_user u,
+								t_sys_user_role_rel ur,
+								t_sys_role r 
+					 where u.ID = ur.USER_ID
+					 and ur.ROLE_ID = r.ID
+					 and u.ID = #{id,jdbcType=INTEGER}
+  </select>
+   
+  <update id="updateDeleteByKey">
+      update t_sys_user set IS_DELETE = 1 where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 修改用户密码 -->
+  <update id="updatePassword">
+  	update T_SYS_USER
+    <set>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="updatorId != null" >
+        UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      </if>
+ 	</set>
+ 	where ID = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>

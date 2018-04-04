@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysPermissionsMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysPermissions">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="RES_ID" jdbcType="INTEGER" property="resId" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CODE, NAME, RES_ID, STATUS, RMK
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_permissions
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_permissions
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysPermissions">
+    insert into t_sys_permissions (ID, CODE, NAME, 
+      RES_ID, STATUS, RMK)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{resId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{rmk,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysPermissions">
+    insert into t_sys_permissions
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="resId != null">
+        RES_ID,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="rmk != null">
+        RMK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resId != null">
+        #{resId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null">
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wy.npo.entity.SysPermissions">
+    update t_sys_permissions
+    <set>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="resId != null">
+        RES_ID = #{resId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rmk != null">
+        RMK = #{rmk,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wy.npo.entity.SysPermissions">
+    update t_sys_permissions
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      RES_ID = #{resId,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=INTEGER},
+      RMK = #{rmk,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 根据账号查询权限 -->
+  <select id="queryPermissionsByAccount"  resultType="String">
+      SELECT p.code 
+          FROM T_SYS_ROLE r,T_SYS_USER u,T_SYS_USER_ROLE_REL urr,
+                         T_SYS_PERMISSIONS p,T_SYS_ROLE_PERM_REL srp
+          WHERE r.ID = urr.ROLE_ID and u.ID = urr.USER_ID 
+            and p.id = srp.perm_id
+            and r.ID = srp.role_id
+            and u.ACCOUNT = #{account,jdbcType=VARCHAR} 
+   </select> 
+   
+</mapper>

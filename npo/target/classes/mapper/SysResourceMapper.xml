@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysResource">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PID" jdbcType="INTEGER" property="pid" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="METHOD" jdbcType="VARCHAR" property="method" />
+    <result column="ORDER_NUM" jdbcType="INTEGER" property="orderNum" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATOR_ID" jdbcType="INTEGER" property="updatorId" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+  </resultMap>
+  
+  <resultMap id="MenuPermResultMap" type="com.wy.npo.entity.SysResource">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PID" jdbcType="INTEGER" property="pid" />
+    <result column="URL" jdbcType="VARCHAR" property="url" />
+    <result column="METHOD" jdbcType="VARCHAR" property="method" />
+    <result column="ORDER_NUM" jdbcType="INTEGER" property="orderNum" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATOR_ID" jdbcType="INTEGER" property="updatorId" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+    <collection property="sysPermissions"  ofType="com.wy.npo.entity.SysPermissions"> 
+            <id column="peid" jdbcType="INTEGER" property="id" />
+		    <result column="CODE" jdbcType="VARCHAR" property="code" />
+		    <result column="pName" jdbcType="VARCHAR" property="name" />
+		    <result column="RES_ID" jdbcType="INTEGER" property="resId" />
+		    <result column="STATUS" jdbcType="INTEGER" property="status" />
+		    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+		    <result column="is_checked" property="isChecked" />
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, NAME, PID, URL, METHOD, ORDER_NUM, STATUS, RMK, UPDATE_TIME, CREATE_TIME, UPDATOR_ID, 
+    CREATOR_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_resource
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_resource
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysResource">
+    insert into t_sys_resource (ID, NAME, PID, 
+      URL, METHOD, ORDER_NUM, 
+      STATUS, RMK, UPDATE_TIME, 
+      CREATE_TIME, UPDATOR_ID, CREATOR_ID
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{orderNum,jdbcType=INTEGER}, 
+      #{status,jdbcType=TINYINT}, #{rmk,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatorId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysResource">
+    insert into t_sys_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="url != null">
+        URL,
+      </if>
+      <if test="method != null">
+        METHOD,
+      </if>
+      <if test="orderNum != null">
+        ORDER_NUM,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="rmk != null">
+        RMK,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="rmk != null">
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wy.npo.entity.SysResource">
+    update t_sys_resource
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        PID = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        URL = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        METHOD = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="rmk != null">
+        RMK = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wy.npo.entity.SysResource">
+    update t_sys_resource
+    set NAME = #{name,jdbcType=VARCHAR},
+      PID = #{pid,jdbcType=INTEGER},
+      URL = #{url,jdbcType=VARCHAR},
+      METHOD = #{method,jdbcType=VARCHAR},
+      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=TINYINT},
+      RMK = #{rmk,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      CREATOR_ID = #{creatorId,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="queryResourceByAccount" resultType="com.wy.npo.entity.SysResource">
+     select DISTINCT r.*,(select count(1) from T_SYS_RESOURCE s where s.pid!=0 and s.pid=r.id) countChildrens  
+      from T_SYS_RESOURCE r
+		LEFT JOIN T_SYS_RESOURCE_ROLE_REL rr on r.id = rr.source_id  
+		LEFT JOIN T_SYS_ROLE sr on rr.role_id = sr.id
+		LEFT JOIN T_SYS_USER_ROLE_REL ur on sr.id = ur.role_id
+		LEFT JOIN T_SYS_USER u on ur.user_id = u.id
+		where r.status = 1
+		and u.account = #{account,jdbcType=VARCHAR}
+		AND r.id not in(
+		SELECT tt.id FROM(
+		  SELECT m.id,
+							(SELECT COUNT(pid) FROM T_SYS_RESOURCE sp WHERE sp.status=1 AND sp.pid=m.id AND m.pid=0 ) countch
+						 FROM T_SYS_RESOURCE m WHERE m.pid=0
+		) tt 
+		where countch =0
+		)
+		order by r.order_num
+  </select>
+  
+  <select id="queryResourceRelPermByRoleId" resultMap="MenuPermResultMap">
+      select r.id,
+            r.PID,
+            r.ORDER_NUM,
+            r.name,
+            p.CODE,
+            p.NAME pName,
+            p.ID peid,
+            p.RES_ID
+            <if test="roleId != null">,
+            if(isnull(rrp.PERM_ID),0,1) is_checked
+            </if> 
+       from t_sys_resource r 
+       left join t_sys_permissions p
+       on r.ID = p.RES_ID
+       <if test="roleId != null">
+	       left join (select rp.PERM_ID from t_sys_role ro,t_sys_role_perm_rel rp where ro.ID = rp.ROLE_ID and ro.ID = #{roleId}) rrp
+	       on p.id = rrp.perm_id
+       </if>
+  </select>
+  
+  <select id="queryPidListByChildId" resultType="java.lang.Integer">
+      select pid from 
+      t_sys_resource where id in 
+        <foreach collection="list" item="item_id" separator="," open="(" close=")">  
+            #{item_id}  
+        </foreach>  
+      group by pid
+  </select>
+  
+</mapper>

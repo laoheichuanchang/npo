@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysRoleMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysRole">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="STATUS" jdbcType="TINYINT" property="status" />
+    <result column="RMK" jdbcType="VARCHAR" property="rmk" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATOR_ID" jdbcType="INTEGER" property="updatorId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="ORG_ID" jdbcType="INTEGER" property="orgId"/>
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CODE, NAME, STATUS, RMK, CREATOR_ID, CREATE_TIME, UPDATOR_ID, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+	   select 
+	      r.ID, 
+	      r.CODE, 
+	      r.NAME, 
+	      r.STATUS, 
+	      r.RMK, 
+	      r.CREATOR_ID, 
+	      r.CREATE_TIME, 
+	      r.UPDATOR_ID, 
+	      r.UPDATE_TIME,
+	      o.id ORG_ID,
+	      o.NAME org_name
+	    from t_sys_role r,t_sys_org o,t_sys_org_role_rel rol
+	    where r.ID = rol.ROLE_ID
+	    and rol.ORG_ID = o.ID
+	    and r.ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_role
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sys_role (ID, CODE, NAME, 
+      STATUS, RMK, CREATOR_ID, 
+      CREATE_TIME, UPDATOR_ID, UPDATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{rmk,jdbcType=VARCHAR}, #{creatorId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatorId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysRole" useGeneratedKeys="true" keyProperty="id">
+    insert into t_sys_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="code != null">
+        CODE,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="rmk != null">
+        RMK,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="rmk != null">
+        #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wy.npo.entity.SysRole">
+    update t_sys_role
+    <set>
+      <if test="code != null">
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="rmk != null">
+        RMK = #{rmk,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatorId != null">
+        UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wy.npo.entity.SysRole">
+    update t_sys_role
+    set CODE = #{code,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=TINYINT},
+      RMK = #{rmk,jdbcType=VARCHAR},
+      CREATOR_ID = #{creatorId,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATOR_ID = #{updatorId,jdbcType=INTEGER},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <!-- 根据账号查询角色 -->
+  <select id="queryRolesByAccount"  resultType="String">
+     SELECT r.code FROM T_SYS_ROLE r,T_SYS_USER u,T_SYS_USER_ROLE_REL urr 
+           WHERE r.ID = urr.ROLE_ID
+             and u.ID = urr.USER_ID 
+             and r.status = 1 
+             and u.ACCOUNT = #{account,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="queryListByBean" resultMap="BaseResultMap">
+	      select 
+		    t.ID, 
+		    t.CODE, 
+		    t.NAME, 
+		    t.STATUS, 
+		    t.RMK, 
+		    cu.NAME createName, 
+		    t.CREATE_TIME, 
+		    eu.NAME updateName, 
+		    t.UPDATE_TIME
+		  from t_sys_role t,t_sys_user cu,t_sys_user eu
+		  where t.CREATOR_ID = cu.ID
+           AND t.UPDATOR_ID = eu.ID
+		  <if test="record.code != null and record.code !=''">
+	       AND t.CODE = #{record.code,jdbcType=VARCHAR}
+	      </if>
+	      <if test="record.name != null and record.name !=''">
+	        <!--  AND t.NAME = #{record.name,jdbcType=VARCHAR}-->
+	        AND t.NAME like CONCAT('%',#{record.name},'%')
+	      </if>
+	      <if test="record.status != null">
+	       AND t.STATUS = #{record.status,jdbcType=TINYINT}
+	      </if>
+	      <if test="page.sort != null and page.sort != ''">
+              order by ${page.sort} ${page.order}
+          </if>
+          <if test="page.page > 0">
+              limit #{page.start},#{page.end}
+          </if>
+  </select>
+  
+  <select id="queryCountByBean" resultType="long">
+	      select 
+		    count(1)
+		  from t_sys_role t,t_sys_user cu,t_sys_user eu
+		  where t.CREATOR_ID = cu.ID
+           AND t.UPDATOR_ID = eu.ID
+		  <if test="code != null and code !=''">
+	       AND t.CODE = #{code,jdbcType=VARCHAR}
+	      </if>
+	      <if test="name != null and name !=''">
+	       AND t.NAME like CONCAT('%',#{name},'%')
+	       <!--  AND t.NAME = #{name,jdbcType=VARCHAR}-->
+	      </if>
+	      <if test="status != null">
+	       AND t.STATUS = #{status,jdbcType=TINYINT}
+	      </if>        
+  </select>
+  
+</mapper>

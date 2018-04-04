@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysUserLoginLogMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysUserLoginLog">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+    <result column="LOGIN_IP" jdbcType="VARCHAR" property="loginIp" />
+    <result column="LOGIN_TIME" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="LOGIN_UA" jdbcType="VARCHAR" property="loginUa" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ID, LOGIN_IP, LOGIN_TIME, LOGIN_UA
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_user_login_log
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_user_login_log
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysUserLoginLog">
+    insert into t_sys_user_login_log (ID, USER_ID, LOGIN_IP, 
+      LOGIN_TIME, LOGIN_UA)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{loginIp,jdbcType=VARCHAR}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{loginUa,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysUserLoginLog">
+    insert into t_sys_user_login_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="loginIp != null">
+        LOGIN_IP,
+      </if>
+      <if test="loginTime != null">
+        LOGIN_TIME,
+      </if>
+      <if test="loginUa != null">
+        LOGIN_UA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginIp != null">
+        #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginUa != null">
+        #{loginUa,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wy.npo.entity.SysUserLoginLog">
+    update t_sys_user_login_log
+    <set>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginIp != null">
+        LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      </if>
+      <if test="loginTime != null">
+        LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginUa != null">
+        LOGIN_UA = #{loginUa,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wy.npo.entity.SysUserLoginLog">
+    update t_sys_user_login_log
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+      LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      LOGIN_UA = #{loginUa,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectListByBean"  resultType="com.wy.npo.entity.SysUserLoginLog" >
+      select l.ID,
+             l.USER_ID userId,
+             l.LOGIN_IP loginIp,
+             l.LOGIN_TIME loginTime,
+             u.NAME userName,
+             u.ACCOUNT account
+          from t_sys_user_login_log l,t_sys_user u 
+          where l.USER_ID = u.ID 
+         <if test="record.userName != null and record.userName != ''" >
+        	AND u.NAME = #{record.userName}
+      	 </if>
+      	 <if test="record.account != null and record.account != ''" >
+        	AND u.ACCOUNT = #{record.account}
+      	 </if>
+         <if test="page.sort != null and page.sort != ''">
+            order by l.${page.sort} ${page.order}
+        </if>
+        <if test="page.page > 0">
+            limit #{page.start},#{page.end}
+        </if>
+  </select>
+  
+  <select id="selectCountByBean"  resultType="long">
+        select count(1) 
+          from t_sys_user_login_log l,t_sys_user u 
+          where l.USER_ID = u.ID 
+         <if test="userName != null and userName != ''" >
+        	AND u.NAME = #{userName}
+      	 </if>
+      	 <if test="account != null and account != ''" >
+        	AND u.ACCOUNT = #{account}
+      	 </if>
+  </select>
+  
+   <select id="selectList"  resultType="com.wy.npo.entity.SysUserLoginLog" >
+      select l.ID,
+             l.USER_ID userId,
+             l.LOGIN_IP loginIp,
+             l.LOGIN_TIME loginTime,
+             u.NAME userName,
+             u.ACCOUNT account
+          from t_sys_user_login_log l,t_sys_user u 
+          where l.USER_ID = u.ID 
+         <if test="userName != null and userName != ''" >
+        	AND u.NAME = #{userName}
+      	 </if>
+      	 <if test="account != null and account != ''" >
+        	AND u.ACCOUNT = #{account}
+      	 </if>
+  </select>
+</mapper>

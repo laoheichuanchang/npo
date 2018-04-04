@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wy.npo.dao.SysOrgRoleRelMapper">
+  <resultMap id="BaseResultMap" type="com.wy.npo.entity.SysOrgRoleRel">
+    <result column="ROLE_ID" jdbcType="INTEGER" property="roleId" />
+    <result column="ORG_ID" jdbcType="INTEGER" property="orgId" />
+    <result column="CREATOR_ID" jdbcType="INTEGER" property="creatorId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <insert id="insert" parameterType="com.wy.npo.entity.SysOrgRoleRel">
+    insert into t_sys_org_role_rel (ROLE_ID, ORG_ID, CREATOR_ID, 
+      CREATE_TIME)
+    values (#{roleId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{creatorId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wy.npo.entity.SysOrgRoleRel">
+    insert into t_sys_org_role_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        ROLE_ID,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="creatorId != null">
+        CREATOR_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="creatorId != null">
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByRoleId"  parameterType="int">
+     delete from t_sys_org_role_rel where ROLE_ID = #{roleId}
+  </delete>
+</mapper>

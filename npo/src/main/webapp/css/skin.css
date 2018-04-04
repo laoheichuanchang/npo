@@ -1,0 +1,56 @@
+a{
+ text-decoration: none;	
+}
+/*
+ * 鑿滃崟闈㈡澘鑳屾櫙
+ * !important 璇硶浼樺厛鏉�
+ */
+.layout-body {
+  background-color: #f9f8f8;
+  color: #000000;
+}
+
+/* 椤堕儴 */
+/* .panel-body-noborder {
+  background-color: #46B43B !important;
+} */
+
+/* 璁剧疆婊氬姩鏉＄殑鏍峰紡 */
+::-webkit-scrollbar {    
+	width: 12px;
+}
+/* 婊氬姩妲� */
+::-webkit-scrollbar-track {    
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);    
+	border-radius: 10px;
+}
+/* 婊氬姩鏉℃粦鍧� */
+::-webkit-scrollbar-thumb {    
+	border-radius: 10px;    
+	background: rgba(0,0,0,0.1);    
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {    
+	background: rgba(255,0,0,0.4);
+}
+/*DIV婊氬姩鏉″睘鎬у強鏍峰紡*/
+div{
+	scrollBar-face-color:green; 
+	scrollBar-hightLight-color:red; 
+	scrollBar-3dLight-color:orange; 
+	scrollBar-darkshadow-color:blue; 
+	scrollBar-shadow-color:yellow; 
+	scrollBar-arrow-color:purple; 
+	scrollBar-track-color:#F1FDEF; 
+	scrollBar-base-color:pink; 
+}
+/*
+face-color锛氭粦鍧楅鑹�
+hightlight-color锛氶珮浜鑹�
+3dlight-color锛氫笁缁村厜绾块鑹�
+darkshadow-color锛氭殫褰遍鑹�
+shadow-color锛氶槾褰遍鑹�
+arrow-color锛氱澶撮鑹�
+track-color锛氭粦閬撻鑹�
+base-color锛欴IV婊氬姩鏉＄殑涓昏棰滆壊锛屽叾涓寘鍚粴鍔ㄦ寜閽拰婊氬姩婊戝潡 
+*/
