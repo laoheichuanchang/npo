@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+	<contextName>cloud-pay</contextName>
+	<Property name="log.base" value="/home/logs/cloudpay" />
+	<Property name="log.name" value="cloud-pay" />
+	<jmxConfigurator />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>%-5level [%contextName] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${log.base}/${log.name}.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/${log.name}-log-%d{yyyy-MM-dd}.%i.zip</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"> 
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<Pattern>%-5level [%contextName] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger.%method - %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+    <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1024</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1024</queueSize>
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="FILE" />
+    </appender>
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC_FILE"/>
+	</root>
+
+</configuration>

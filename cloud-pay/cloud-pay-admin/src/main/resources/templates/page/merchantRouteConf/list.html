@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/css-head :: css-head">
+</head>
+<style>
+	textarea{
+		width:100%;
+		height:100px;
+	}
+	
+.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+
+.chk_1{
+    display: none;
+}
+.chk_1 + label {
+	background-color: #FFF;
+	border: 1px solid #C1CACA;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+	padding: 9px;
+	border-radius: 5px;
+	display: inline-block;
+	position: relative;
+	margin-right: 30px;
+}
+.chk_1 + label:active {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+}
+
+.chk_1:checked + label {
+	background-color: #ECF2F7;
+	border: 1px solid #92A1AC;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+	color: #243441;
+}
+
+.chk_1:checked + label:after {
+	content: '\2714';
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: #758794;
+	width: 100%;
+	text-align: center;
+	font-size: 1.4em;
+	padding: 1px 0 0 0;
+	vertical-align: text-top;
+}
+div.cbp label.font{
+	text-align: center;
+	font-size: 1.4em;
+	vertical-align: text-top;
+	margin-top: -15px;
+	margin-left: -10px;
+}
+
+</style>
+<body>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h1>
+    	 当前位置：路由管理
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> 系统管理</a></li>
+    <li class="active">路由管理</li>
+  </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+	 <div class="box">
+            <div class="box-header">
+              <button th:if="${QX.add == '1' && QX.query == '1'}" class="btn btn-success btn-sm" id="addRoute"><i class="fa fa-plus"></i> &nbsp;&nbsp;添加路由</button>
+              <button class="btn btn-primary btn-sm" id="searchBtn">查询</button>
+					<button class="btn btn-sm" id="resetBtn">重置</button>
+            </div>
+				  
+				  <div class="row clearfix">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 hidden-xs">
+									<div class="form-group">
+										<div class="form-line">
+											<label for="search_type">主体类型</label>
+										    <select name="search_type" class="form-control">
+										      <option value="">请选择</option>
+										      <option value="1">合作机构</option>
+										      <option value="2">商户</option>
+										    </select>
+										</div>
+									</div>
+								</div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 hidden-xs">
+									<div class="form-group">
+										<div class="form-line">
+											<label for="search_status">状态</label>
+										    <select name="search_status" class="form-control">
+										      <option value="">请选择</option>
+										      <option value="1">正常</option>
+										      <option value="0">冻结</option>
+										    </select>
+										</div>
+									</div>
+								</div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+									<div class="form-group">
+										<div class="form-line">
+											<label for="search_merchantName">商户名称</label>
+											<input type="text" class="form-control" id="search_merchantName" name="search_merchantName" maxlength="20"></input>		
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 hidden-xs">
+									<div class="form-group">
+										<div class="form-line">
+											<label for="createDateBegin">更新开始日期</label>
+											<input type="text" class="form-control" id="createDateBegin" name="createDateBegin" readonly></input>		
+										</div>
+									</div>
+								</div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 hidden-xs">
+									<div class="form-group">
+										<div class="form-line">
+											<label for="createDateEnd">更新结束日期</label>
+											<input type="text" class="form-control" id="createDateEnd" name="createDateEnd" readonly></input>		
+										</div>
+									</div>
+								</div>		
+							</div>
+			
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="roleList" class="table table-bordered table-striped">
+                <thead>
+	                <tr>
+	                  <th>主体类型</th>
+	                  <th>合作机构名称</th>
+	                  <th>商户名称</th>
+	                  <th>通道名称</th>
+	                  <th>是否需要垫资</th>
+					  <th>垫资机构名称</th>
+					  <th>垫资限额</th>
+					  <th>状态</th>
+	                  <th>更新时间</th>
+					  <th>更新人</th>
+	                  <th>操作</th>
+	                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${QX.query == '1'}" th:each="route,stat :${merchantRoutes}">
+                  <td th:text="${route.type}">主体类型</td>
+                  <td th:if="${route.type == 1}" th:text="${route.merchantName}"></td>
+                  <td th:if="${route.type == 2}"></td>
+                  <td th:if="${route.type == 1}"></td>
+                  <td th:if="${route.type == 2}" th:text="${route.merchantName}"></td>
+                  <td th:text="${route.channelName}">通道名称</td>
+                  <td th:if="${route.loaning == 1}" th:text="是"></td>
+				  <td th:if="${route.loaning == 0}" th:text="否"></td>
+				  <td th:text="${route.loaningOrgName}">垫资机构名称</td>
+				  <td th:text="${route.loaningAmount}">垫资限额</td>
+				  <td th:if="${route.status == 1}" th:text="正常"></td>
+				  <td th:if="${route.status == 0}" th:text="冻结"></td>
+                  <td th:text="${#dates.format(route.modifyTime,'yyyy-MM-dd HH:mm:ss')}">更新时间</td>
+                  <td th:text="${route.modifer}">更新人</td>
+                  <td>
+                  	<div th:if="${route.id != 1 || meid == '1'}">
+	                  	<span data-toggle="tooltip" title="编辑" th:if="${QX.edit == '1'}" class="btn btn-xs btn-info" 
+							th:onclick="'editRoute(\''+${route.id}+'\',\''+${route.type}+'\',\''+${route.merchantId}+'\',\''+${route.channelId}+'\'
+							,\''+${route.loaning}+'\',\''+${route.loaningOrgId}+'\',\''+${route.loaningAmount}+'\');'">
+							<i class="fa fa-edit"></i> 编辑
+						</span>
+	                  	<span data-toggle="tooltip" title="删除" th:if="${QX.del == '1'}" class="btn btn-xs btn-danger" th:onclick="'delRoute(\''+${route.id}+'\');'"><i class="fa fa-trash-o"></i> 删除</span>
+	                  	<span data-toggle="tooltip" title="删除" th:if="${route.status == 1}" class="btn btn-xs btn-danger" th:onclick="'updateStatus(\''+${route.id}+'\', 0);'"><i class="fa fa-trash-o"></i> 冻结</span>
+	                  	<span data-toggle="tooltip" title="删除" th:if="${route.status == 0}" class="btn btn-xs btn-danger" th:onclick="'updateStatus(\''+${route.id}+'\', 1);'"><i class="fa fa-trash-o"></i> 解冻</span>
+	                  	<span data-toggle="tooltip" title="权限不够" th:unless="${QX.edit == '1' || QX.add == '1' || QX.del == '1'}" ><i class="fa fa-lock"></i> 无权限</span>
+                  	</div>
+                  	<div th:if="${route.id == 1 && meid != '1'}">
+	                  	<span><i class="fa fa-lock"></i></span>
+                  	</div>
+                  </td>
+                </tr>
+                <tr th:unless="${QX.query == '1'}" >
+                	<td colspan="7" align="center">
+						<h2>此路由无权限查看该页面</h2>
+                	</td>
+                </tr>
+                </tbody>
+               </table>
+               
+       </div>
+</section>
+
+
+<!-- 新增或修改的模态框 -->
+<div class="modal fade" id="routeModal" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title text-center" id="usermodelHead">添加路由</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal"  role="form">
+				  <input type="hidden" name="url" value=""/>
+				  <input type="hidden" name="id" value=""/>
+				  <input type="hidden" name="pics" value=""/>
+				  <input type="hidden" name="oldpath" value=""/>
+				  <div class="form-group">
+					    <label for="type" class="col-sm-2 control-label">主体类型</label>
+					    <div class="col-sm-10">
+						    <select name="type" id="type" class="form-control">
+						      <option value="">请选择</option>
+							  <option value="1">合作机构</option>
+							  <option value="2">商户</option>
+						    </select>
+					    </div>
+					  </div>
+				
+				  <div class="form-group">
+					    <label for="merchantId" class="col-sm-2 control-label" id="mLabel">所属机构</label>
+					    <div class="col-sm-10">
+						    <select name="merchantId" id="merchantId" class="form-control">
+						      <option value="">请选择</option>
+						    </select>
+					    </div>
+					  </div>
+				  <div class="form-group">
+					    <label for="channelId" class="col-sm-2 control-label">通道名称</label>
+					    <div class="col-sm-10">
+						    <select name="channelId" class="form-control" id="channelId">
+						      <option value="">请选择</option>
+						      <option th:each="channel : ${channels}" th:value="${channel.id}" th:text="${channel.channelName}">/option>
+						    </select>
+					    </div>
+					  </div>
+				  
+				  <div class="form-group">
+					    <label for="loaning" class="col-sm-2 control-label">是否需要垫资</label>
+					    <div class="col-sm-10">
+						    <select name="loaning" class="form-control" id="loaning">
+						      <option value="">请选择</option>
+						      <option value="0">否</option>
+						      <option value="1">是</option>
+						    </select>
+					    </div>
+					  </div>
+				  
+				  <div class="form-group" id="loaningOrgIdDIV">
+					    <label for="loaningOrgId" class="col-sm-2 control-label">垫资机构名称</label>
+					    <div class="col-sm-10">
+					    	<select name="loaningOrgId" class="form-control" id="loaningOrgId">
+						      <option value="">请选择</option>
+						      <option th:each="merchant : ${loans}" th:value="${merchant.id}" th:text="${merchant.name}">/option>
+						    </select>
+					    </div>
+					  </div>
+				  
+				  <div class="form-group" id="loaningAmountDIV">
+				    <label for="loaningAmount" class="col-sm-2 control-label">垫资限额</label>
+				    <div class="col-sm-10">
+				      <input type="number" class="form-control" name="loaningAmount" value="" id="loaningAmount" placeholder="垫资限额">
+				    </div>
+				  </div>
+				  
+				 </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn btn-success"  id="imgSubmit" >确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>	
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<script th:src="@{/bower_components/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+<script th:src="@{/ztree/js/jquery.ztree.core.js}"></script>
+<script th:src="@{/ztree/js/jquery.ztree.excheck.min.js}"></script>
+<script th:src="@{/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js}"></script> 
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<script th:src="@{/js/path.js}"></script>
+<script th:inline="javascript">
+$(function(){
+	
+	//查询按钮事件
+	$("#searchBtn").off().on("click",function(){
+		var search_type = $("[name='search_type']").val();
+		var search_status = $("[name='search_status']").val();
+		var search_merchantName = $("#search_merchantName").val();
+		var createDateBegin = $("#createDateBegin").val();
+		var createDateEnd = $("#createDateEnd").val();
+		window.location.href = _ctx+'/merchantRouteConf/list'
+			+'?type='+search_type
+			+'&status='+search_status
+			+'&merchantName='+search_merchantName
+			+'&createDateBegin='+createDateBegin
+			+'&createDateEnd='+createDateEnd;
+	});
+
+	//重置按钮事件
+	$("#resetBtn").off().on("click",function(){
+		$("[name='search_type']").val('');
+		$("[name='search_status']").val('');
+		$("#search_merchantName").val('');
+		$("#createDateBegin").val('');
+		$("#createDateEnd").val('');
+	});
+	
+	initDateTimepicker();
+	//初始化日期插件
+	function initDateTimepicker(){
+		$("#createDateBegin").datetimepicker({
+			format:'yyyy-mm-dd hh:ii:ss',
+			language:'zh-CN',
+//			locale:moment.locale('zh-cn'),
+			todayBtn:true,
+			autoclose:true,
+//			todayHignlight:true,
+//			maxView:"year",
+//			minView:"hour",
+			showMeridian:1,
+			pickerPosition:"bottom-left"
+//			startDate:new Date()
+		}).on('click',function(e){
+			$("#createDateBegin").datetimepicker('setEndDate',$("#createDateEnd").val());
+		});
+		$("#createDateEnd").datetimepicker({
+			format:'yyyy-mm-dd hh:ii:ss',
+			language:'zh-CN',
+//			locale:moment.locale('zh-cn'),
+			todayBtn:true,
+			autoclose:true,
+//			todayHignlight:true,
+//			maxView:"year",
+//			minView:"hour",
+			showMeridian:1,
+			pickerPosition:"bottom-left"
+//			startDate:new Date()
+		}).on('click',function(e){
+			$("#createDateEnd").datetimepicker('setStartDate',$("#createDateBegin").val());
+		});
+	}
+	
+	
+	 //提示框
+    $("[data-toggle='tooltip']").tooltip();
+	//表格分页
+    $('#roleList').DataTable({
+    	"scrollX"	  : true,
+  		'paging'      : true,
+  	    'lengthChange': true,
+  	    'searching'   : true,
+  	    'ordering'    : true,
+  	    'info'        : true,
+  	    'autoWidth'   : false,
+  	  	"pagingType"  : "full_numbers",
+  	  	"pageLength"  : 10
+    });
+	
+	$("#addRoute").click(function(){
+		reloadModelData(_ctx+"/merchantRouteConf/add","添加路由","添加","","","","","","","");
+		$("#routeModal").modal("show");
+	});
+	
+	//确认按钮
+	$("#imgSubmit").click(function(){
+		var routeId = $("input[name='id']").val();
+		var url = $("input[name='url']").val();
+		var type = $("[name='type']").val();
+		var merchantId = $("[name='merchantId']").val();
+		var channelId= $("[name='channelId']").val();
+		var loaning= $("[name='loaning']").val();
+		var loaningOrgId= $("[name='loaningOrgId']").val();
+		var loaningAmount= $("input[name='loaningAmount']").val();
+		if(!checkAccount(type,merchantId,channelId,loaning,loaningOrgId,loaningAmount)){
+			return false;
+		}
+		$.ajax({
+			type:"post",
+			url:url,
+			cache:false,
+			dataType:"json",
+			data:{id:routeId,merchantId:merchantId,channelId:channelId,loaning:loaning,loaningAmount:loaningAmount,loaningOrgId:loaningOrgId,type:type},
+			success:function(data){
+				if(data.status == 'success'){
+					$("#routeModal").modal("hide");
+					window.location.href=window.location.href;
+				}else{
+					alert(data.msg);
+				}
+			}
+		});
+	});
+	
+})
+
+//删除路由
+function delRoute(routeId){
+	if(confirm("你确定要删除此路由吗？")){
+		$.ajax({
+			type:"POST",
+			url:_ctx+"/merchantRouteConf/del",
+			dataType:"json",
+			data:{id:routeId},
+			cache:false,
+			success:function(data){
+				if(data.status == 'success'){
+					window.location.href=window.location.href;
+				}else{
+					alert(data.msg);
+				}
+			}
+		});
+	}
+}
+
+//删除路由
+function updateStatus(routeId, status){
+    var msg='';
+    if(status == 0) {
+    	msg = '你确定要冻结此路由吗？';
+    } else {
+    	msg = '你确定要解冻此路由吗？';
+    }
+	if(confirm(msg)){
+		$.ajax({
+			type:"POST",
+			url:_ctx+"/merchantRouteConf/updateStatus",
+			dataType:"json",
+			data:{id:routeId, status : status},
+			cache:false,
+			success:function(data){
+				if(data.status == 'success'){
+					window.location.href=window.location.href;
+				}else{
+					alert(data.msg);
+				}
+			}
+		});
+	}
+}
+
+//编辑路由
+function editRoute(id,type,merchantId,channelId,loaning,loaningOrgId,loaningAmount){
+	console.log(id+","+type+","+merchantId+","+channelId+","+loaning+","+loaningOrgId+","+loaningAmount);
+	reloadModelData(_ctx+"/merchantRouteConf/edit","编辑路由","更新",id,type,merchantId,channelId,loaning,loaningOrgId,loaningAmount);
+	$("#routeModal").modal("show");
+}
+
+//验证数据
+function checkAccount(type,merchantId,channelId,loaning,loaningOrgId,loaningAmount){
+	if(type == ''){
+		$("input[name='type']").focus();
+		alert("主体类型不能为空");
+		return false;
+	}
+	if(merchantId == ''){
+		$("input[name='merchantId']").focus();
+		if(type == 1) {
+			alert("合作机构不能为空");
+		} else {
+			alert("商户不能为空");
+		}
+		return false;
+	}
+	if(channelId == ''){
+		$("input[name='channelId']").focus();
+		alert("通道名称不能为空");
+		return false;
+	}
+	if(loaning == ''){
+		$("input[name='loaning']").focus();
+		alert("是否垫资不能为空");
+		return false;
+	}
+	if(loaning == 1) {
+		if(loaningOrgId == '' || loaningOrgId == null){
+			$("input[name='loaningOrgId']").focus();
+			alert("垫资机构不能为空");
+			return false;
+		}
+		if(loaningAmount == '' || loaningAmount == null){
+			$("input[name='loaningAmount']").focus();
+			alert("垫资限额不能为空");
+			return false;
+		}
+		if(loaningAmount <=0) {
+			alert("垫资限额必须大于0");
+			return false;
+		}
+	}
+	return true;
+}
+
+//加载模态框的数据
+function reloadModelData(url,title,btntext,id,type,merchantId,channelId,loaning,loaningOrgId,loaningAmount){
+	$("#routeModal #usermodelHead").text(title);
+	$("#routeModal #imgSubmit").text(btntext);
+	$("input[name='url']").val(url);
+	
+	$("input[name='id']").val(id);
+	$("[name='type']").val(type);
+	if(type == 1) {
+		$("#mLabel").html("所属机构");
+		if(orgs != '') {
+			$.each(orgs, function(i, obj) {
+				$("#merchantId").append("<option value=" + obj.id + ">" + obj.name + "</option>");
+			});
+		}
+	} else if(type == 2){
+		$("#mLabel").html("所属商户");
+		if(merchants != '') {
+			$.each(merchants, function(i, obj) {
+				$("#merchantId").append("<option value=" + obj.id + ">" + obj.name + "</option>");
+			});
+		}
+	}
+	$("[name='merchantId']").val(merchantId);
+	$("[name='channelId']").val(channelId);
+	$("[name='loaning']").val(loaning);
+	$("[name='loaningOrgId']").val(loaningOrgId);
+	$("input[name='loaningAmount']").val(loaningAmount);
+	if(loaning == 1) {
+		$("#loaningOrgIdDIV").show();
+		$("#loaningAmountDIV").show();
+	} else if(loaning == 0){
+		$("#loaningOrgIdDIV").hide();
+		$("#loaningAmountDIV").hide();
+	}
+}
+
+var merchants = [[${merchants}]];
+var orgs = [[${orgs}]];
+
+$('#type').change(function(){ 
+	$("#merchantId option").each(function(i){
+		if(i != 0){
+			$(this).remove();
+		}
+	});
+	if($(this).children('option:selected').val() == 1) {
+		$("#mLabel").html("所属机构");
+		if(orgs != '') {
+			$.each(orgs, function(i, obj) {
+				$("#merchantId").append("<option value=" + obj.id + ">" + obj.name + "</option>");
+			});
+		}
+	} else if($(this).children('option:selected').val() == 2){
+		$("#mLabel").html("所属商户");
+		if(merchants != '') {
+			$.each(merchants, function(i, obj) {
+				$("#merchantId").append("<option value=" + obj.id + ">" + obj.name + "</option>");
+			});
+		}
+	}
+}) ;
+
+$('#loaning').change(function(){ 
+	if($(this).children('option:selected').val() == 1) {
+		$("#loaningOrgIdDIV").show();
+		$("#loaningAmountDIV").show();
+	} else if($(this).children('option:selected').val() == 0){
+		$("#loaningOrgIdDIV").hide();
+		$("#loaningAmountDIV").hide();
+	}
+}) ;
+
+</script>
+</body>
+</html>

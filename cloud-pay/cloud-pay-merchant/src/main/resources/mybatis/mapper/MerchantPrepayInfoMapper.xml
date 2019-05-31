@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cloud.pay.merchant.mapper.MerchantPrepayInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cloud.pay.merchant.entity.MerchantPrepayInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="merchant_id" property="merchantId" jdbcType="INTEGER" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="freeze_amount" property="freezeAmount" jdbcType="DECIMAL" />
+    <result column="overdraw" property="overdraw" jdbcType="INTEGER" />
+    <result column="digest" property="digest" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, merchant_id, balance, freeze_amount, overdraw, digest, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_merchant_prepay_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_merchant_prepay_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cloud.pay.merchant.entity.MerchantPrepayInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into t_merchant_prepay_info (id, merchant_id, balance, 
+      freeze_amount, overdraw, digest, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{merchantId,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL}, 
+      #{freezeAmount,jdbcType=DECIMAL}, #{overdraw,jdbcType=INTEGER}, #{digest,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cloud.pay.merchant.entity.MerchantPrepayInfo" >
+    update t_merchant_prepay_info
+    <set >
+      <if test="merchantId != null" >
+        merchant_id = #{merchantId,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="freezeAmount != null" >
+        freeze_amount = #{freezeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="overdraw != null" >
+        overdraw = #{overdraw,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cloud.pay.merchant.entity.MerchantPrepayInfo" >
+    update t_merchant_prepay_info
+    set balance = #{balance,jdbcType=DECIMAL},
+      freeze_amount = #{freezeAmount,jdbcType=DECIMAL},
+      digest = #{digest,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="lockByMerchantId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_merchant_prepay_info
+    where merchant_id = #{merchantId,jdbcType=INTEGER} for update
+  </select>
+  
+  <resultMap id="BaseResultDTO" type="com.cloud.pay.merchant.dto.MerchantPrepayInfoDTO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="merchant_id" property="merchantId" jdbcType="INTEGER" />
+    <result column="merchant_name" property="merchantName" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="freeze_amount" property="freezeAmount" jdbcType="DECIMAL" />
+    <result column="overdraw" property="overdraw" jdbcType="INTEGER" />
+    <result column="digest" property="digest" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectList" resultMap="BaseResultDTO">
+      SELECT
+			i.id, i.merchant_id, m.name merchant_name,i.balance, i.freeze_amount, i.overdraw, i.digest, i.create_time
+		FROM
+			t_merchant_prepay_info i,
+			t_merchant_base_info m
+		WHERE i.merchant_id = m.id
+      <if test="merchantId != null" >
+        and m.id = #{merchantId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null" >
+       and i.create_time &gt; #{startTime}
+      </if>
+      <if test="endTime != null" >
+       and i.create_time &lt; #{endTime}
+      </if>
+      <if test="type == 'merchant'" >
+       and m.type in (4,5)
+      </if>
+      <if test="type == 'org'" >
+       and m.type in (1,2,3)
+      </if>
+      <if test="userMerchantId != null and userMerchantType == 'org'" >
+       and (m.id = #{userMerchantId,jdbcType=INTEGER} or m.org_id = #{userMerchantId,jdbcType=INTEGER})
+      </if>
+      <if test="userMerchantId != null and userMerchantType == 'merchant'" >
+       and m.id = #{userMerchantId,jdbcType=INTEGER}
+      </if>
+      order by i.create_time desc
+  </select>
+  
+  <select id="lockByMerchantIds" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_merchant_prepay_info
+    where merchant_id in 
+    <foreach collection="merchantIds" index="index" item="merchantId" open="(" close=")" separator=",">
+		 #{merchantId}
+	</foreach>
+     for update
+  </select>
+</mapper>

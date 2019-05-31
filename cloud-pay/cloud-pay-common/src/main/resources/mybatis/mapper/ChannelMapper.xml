@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cloud.pay.common.mapper.ChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.cloud.pay.common.entity.Channel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="channel_name" property="channelName" jdbcType="VARCHAR" />
+    <result column="channel_merchant_id" property="channelMerchantId" jdbcType="VARCHAR" />
+    <result column="channel_type" property="channelType" jdbcType="INTEGER" />
+    <result column="fee_type" property="feeType" jdbcType="INTEGER" />
+    <result column="fee" property="fee" jdbcType="DECIMAL" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modifer" property="modifer" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, channel_code, channel_name, channel_merchant_id, channel_type, fee_type, fee, creator, create_time, 
+    modifer, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cloud.pay.common.entity.Channel" >
+    insert into t_channel (id, channel_code, channel_name, channel_merchant_id, 
+      channel_type, fee_type, fee, 
+      creator, create_time, modifer, 
+      modify_time)
+    values (#{id,jdbcType=INTEGER}, #{channelCode,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{channelMerchantId,jdbcType=VARCHAR}, 
+      #{channelType,jdbcType=INTEGER}, #{feeType,jdbcType=INTEGER}, #{fee,jdbcType=DECIMAL}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifer,jdbcType=VARCHAR}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cloud.pay.common.entity.Channel" >
+    insert into t_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channelName != null" >
+        channel_name,
+      </if>
+      <if test="channelMerchantId != null" >
+        channel_merchant_id,
+      </if>
+      <if test="channelType != null" >
+        channel_type,
+      </if>
+      <if test="feeType != null" >
+        fee_type,
+      </if>
+      <if test="fee != null" >
+        fee,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifer != null" >
+        modifer,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="channelName != null" >
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchantId != null" >
+        #{channelMerchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null" >
+        #{channelType,jdbcType=INTEGER},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null" >
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifer != null" >
+        #{modifer,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cloud.pay.common.entity.Channel" >
+    update t_channel
+    <set >
+      <if test="channelCode != null" >
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null" >
+        channel_name = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchantId != null" >
+        channel_merchant_id = #{channelMerchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null" >
+        channel_type = #{channelType,jdbcType=INTEGER},
+      </if>
+      <if test="feeType != null" >
+        fee_type = #{feeType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifer != null" >
+        modifer = #{modifer,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cloud.pay.common.entity.Channel" >
+    update t_channel
+    set channel_code = #{channelCode,jdbcType=VARCHAR},
+      channel_name = #{channelName,jdbcType=VARCHAR},
+      channel_merchant_id = #{channelMerchantId,jdbcType=VARCHAR},
+      channel_type = #{channelType,jdbcType=INTEGER},
+      fee_type = #{feeType,jdbcType=INTEGER},
+      fee = #{fee,jdbcType=DECIMAL},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modifer = #{modifer,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getChannelList" resultMap="BaseResultMap">
+	 	SELECT 
+			<include refid="Base_Column_List" />
+		FROM 
+			t_channel
+		where 1 = 1
+			<if test="channelCode != null and channelCode != ''" >
+        and channel_code like concat('%',#{channelCode,jdbcType=VARCHAR},'%')
+      </if>
+      <if test="channelName != null and channelName != ''" >
+       and channel_name like concat('%',#{channelName,jdbcType=VARCHAR},'%')
+      </if>
+  </select>
+  
+   <select id="getUnInitChannelList" resultMap="BaseResultMap">
+		select
+		 <include refid="Base_Column_List" />
+		from t_channel t
+		where not exists (
+		    select c.ID 
+		    from t_channel c,t_recon r
+		     where c.id = r.CHANNEL_ID 
+		     and r.ACCOUNT_DATE = #{accountDate,jdbcType=DATE} 
+		     and t.id = c.id
+		)
+  </select>
+</mapper>
